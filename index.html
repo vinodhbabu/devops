@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Form Validation</title>
+    <script>
+        // 1) No NULL value in a field
+        function checkNotNull(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field.value.trim() === "") {
+                alert("This field cannot be empty");
+                return false;
+            }
+            return true;
+        }
+
+        // 3) Email verification using regular expression
+        function validateEmail(emailId) {
+            const email = document.getElementById(emailId).value;
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!regex.test(email)) {
+                alert("Invalid email format");
+                return false;
+            }
+                return false;
+            }
+            return true;
+        }
+
+        // 5) Password should have at least 8 characters
+        function validatePasswordLength(passwordId) {
+            const password = document.getElementById(passwordId).value;
+            if (password.length < 8) {
+                alert("Password must be at least 8 characters long");
+                return false;
+            }
+            return true;
+        }
+
+        // 6) Password should have at least one capital letter, a small letter, a special character, and a digit
+        function validatePasswordComplexity(passwordId) {
+            const password = document.getElementById(passwordId).value;
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!regex.test(password)) {
+                alert("Password must contain at least one capital letter, one small letter, one special character, and one digit");
+                return false;
+            }
+            return true;
+        }
+
+        // 7) Phone number should be only digits of length 10
+        function validatePhoneNumber(phoneId) {
+            const phone = document.getElementById(phoneId).value;
+            const regex = /^\d{10}$/;
+            if (!regex.test(phone)) {
+                alert("Phone number must be 10 digits long");
+                return false;
+            }
+            return true;
+        }
+
+        // 8) Show/hide password
+        function togglePasswordVisibility(passwordId) {
+            const passwordField = document.getElementById(passwordId);
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
+        // 9) Permanent address is same as present address (checkbox)
+        function copyAddress() {
+            const isChecked = document.getElementById("sameAddress").checked;
+            const presentAddress = document.getElementById("presentAddress").value;
+            const permanentAddress = document.getElementById("permanentAddress");
+            if (isChecked) {
+                permanentAddress.value = presentAddress;
+            } else {
+                permanentAddress.value = "";
+            }
+        }
+
+        // 10) Validate image upload
+        function validateImageUpload() {
+            const fileInput = document.getElementById('imageUpload');
+            if (fileInput.files.length === 0) {
+                alert('Please upload an image');
+                return false;
+            }
+            return true;
+        }
+
+        // 11) Confirm image upload
+        function confirmImageUpload() {
+            if (confirm('Are you sure you want to upload the image?')) {
+                validateImageUpload();
+            }
+        }
+
+        // 12) Image resize using onMouseover, onMouseOut event
+        function resizeImage(hover) {
+            const image = document.getElementById('resizeImage');
+            if (hover) {
+                image.style.width = "300px";
+                image.style.height = "300px";
+            } else {
+                image.style.width = "100px";
+                image.style.height = "100px";
+            }
+        }
+
+        // 15) Check that there are no special characters in the name field
+        function validateName(nameId) {
+            const name = document.getElementById(nameId).value;
+            const regex = /^[A-Za-z\s]+$/;
+            if (!regex.test(name)) {
+                alert("Name must not contain special characters");
+                return false;
+            }
+            return true;
+        }
+
+        // 16) Onchange lowercase to uppercase
+        function toUpperCase(input) {
+            input.value = input.value.toUpperCase();
+        }
+
+        // 17) Change body background color on button click
+        function changeBackgroundColor(color) {
+            document.body.style.backgroundColor = color;
+        }
+
+        // 18) Change image onMouseover, onMouseOut
+        function swapImage(hover) {
+            const image = document.getElementById('imageSwap');
+            if (hover) {
+                image.src = "image2.jpg";
+            } else {
+                image.src = "image1.jpg";
+            }
+        }
+
+        // 19) Dynamically add text box
+        function addTextBox() {
+            const container = document.getElementById('textBoxContainer');
+            const input = document.createElement('input');
+            input.type = 'text';
+            container.appendChild(input);
+        }
+
+        // Form validation function
+        function validateForm() {
+            const requiredFields = ['name', 'email', 'password', 'confirmPassword', 'phone', 'presentAddress'];
+            for (let field of requiredFields) {
+                if (!checkNotNull(field)) {
+                    return false;
+                }
+            }
+
+            if (!validateEmail('email')) return false;
+            if (!checkPasswordsMatch('password', 'confirmPassword')) return false;
+            if (!validatePasswordLength('password')) return false;
+            if (!validatePasswordComplexity('password')) return false;
+            if (!validatePhoneNumber('phone')) return false;
+            if (!validateName('name')) return false;
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <form onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="button" onclick="togglePasswordVisibility('password')">Show/Hide Password</button><br>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required><br>
+
+        <label for="presentAddress">Present Address:</label>
+        <input type="text" id="presentAddress" name="presentAddress" required><br>
+
+        <label for="permanentAddress">Permanent Address:</label>
+        <input type="text" id="permanentAddress" name="permanentAddress"><br>
+
+        <input type="checkbox" id="sameAddress" onclick="copyAddress()">
+        <label for="sameAddress">Permanent address is same as present address</label><br>
+
+        <label for="imageUpload">Upload Image:</label>
+        <input type="file" id="imageUpload" name="imageUpload"><br>
+        <button type="button" onclick="confirmImageUpload()">Upload Image</button><br>
+
+        <img src="image1.jpg" id="resizeImage" onmouseover="resizeImage(true)" onmouseout="resizeImage(false)">
+        <img src="image1.jpg" id="imageSwap" onmouseover="swapImage(true)" onmouseout="swapImage(false)"><br>
+
+        <button type="button" onclick="window.close()">Close Page</button>
+        <button type="button" onclick="window.print()">Print Page</button><br>
+
+        <button type="button" onclick="changeBackgroundColor('blue')">Change Background Color</button><br>
+
+        <button type="button" onclick="addTextBox()">Add Text Box</button>
+        <div id="textBoxContainer"></div><br>
+
+        <label for="lowerToUpper">Lowercase to Uppercase:</label>
+        <input type="text" id="lowerToUpper" oninput="toUpperCase(this)"><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+
+
+      
